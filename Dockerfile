@@ -1,6 +1,6 @@
-FROM alpine:3.11.6
+FROM alpine:latest
 
-LABEL maintainer="Mark <mark.binlab@gmail.com>"
+LABEL maintainer="István Antal <istvan@antal.xyz>"
 
 ARG HOME=/var/lib/bastion
 
@@ -12,7 +12,7 @@ ARG GID=4096
 ENV HOST_KEYS_PATH_PREFIX="/usr"
 ENV HOST_KEYS_PATH="${HOST_KEYS_PATH_PREFIX}/etc/ssh"
 
-COPY bastion /usr/sbin/bastion
+COPY bastion.sh /usr/sbin/bastion.sh
 
 RUN addgroup -S -g ${GID} ${GROUP} \
     && adduser -D -h ${HOME} -s /bin/ash -g "${USER} service" \
@@ -30,4 +30,4 @@ EXPOSE 22/tcp
 
 VOLUME ${HOST_KEYS_PATH}
 
-ENTRYPOINT ["bastion"]
+ENTRYPOINT ["bastion.sh"]
