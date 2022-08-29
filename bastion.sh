@@ -12,6 +12,7 @@ fi
 
 if [ -n "$AUTHORIZED_KEYS" ]; then
     chown 4096:4096 /var/lib/bastion/authorized_keys
+    chmod 600 /var/lib/bastion/authorized_keys
     CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=$AUTHORIZED_KEYS"
 else
     CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=authorized_keys"
