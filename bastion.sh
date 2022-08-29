@@ -70,7 +70,6 @@ else
 fi
 
 /usr/sbin/sshd -D -e -4 \
-    -d \
     -o "HostKey=$HOST_KEYS_PATH/ssh_host_rsa_key" \
     -o "HostKey=$HOST_KEYS_PATH/ssh_host_dsa_key" \
     -o "HostKey=$HOST_KEYS_PATH/ssh_host_ecdsa_key" \
