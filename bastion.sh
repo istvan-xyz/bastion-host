@@ -1,7 +1,7 @@
 #!/usr/bin/env sh
 
 set -x
-ls
+ls $HOME
 
 HOST_KEYS_PATH_PREFIX="${HOST_KEYS_PATH_PREFIX:='/'}"
 HOST_KEYS_PATH="${HOST_KEYS_PATH:='/etc/ssh'}"
