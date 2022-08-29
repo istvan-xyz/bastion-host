@@ -1,7 +1,5 @@
 #!/usr/bin/env sh
-
 set -x
-ls $HOME
 
 HOST_KEYS_PATH_PREFIX="${HOST_KEYS_PATH_PREFIX:='/'}"
 HOST_KEYS_PATH="${HOST_KEYS_PATH:='/etc/ssh'}"
@@ -13,6 +11,7 @@ else
 fi
 
 if [ -n "$AUTHORIZED_KEYS" ]; then
+    chown 4096:4096 /var/lib/bastion/authorized_keys
     CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=$AUTHORIZED_KEYS"
 else
     CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=authorized_keys"
