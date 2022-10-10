@@ -76,7 +76,7 @@ fi
     -o "HostKey=$HOST_KEYS_PATH/ssh_host_ed25519_key" \
     -o "PasswordAuthentication=no" \
     -o "PermitEmptyPasswords=no" \
-    -o "PermitRootLogin=no" \
+    -o "PermitRootLogin=yes" \
     $CONFIG_PUBKEY_AUTHENTICATION \
     $CONFIG_AUTHORIZED_KEYS \
     $CONFIG_GATEWAY_PORTS \
