@@ -25,7 +25,8 @@ RUN addgroup -S -g ${GID} ${GROUP} \
     && chmod +x /usr/sbin/bastion.sh \
     && mkdir -p ${HOST_KEYS_PATH} \
     && mkdir /etc/ssh/auth_principals \
-    && echo "bastion" > /etc/ssh/auth_principals/bastion
+    && echo "bastion" > /etc/ssh/auth_principals/bastion && \
+    echo "root" > /etc/ssh/auth_principals/root
 
 EXPOSE 22/tcp
 
