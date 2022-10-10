@@ -1,36 +1,38 @@
-FROM alpine:latest
+FROM debian:latest
 
 LABEL maintainer="István Antal <istvan@antal.xyz>"
 
-ARG HOME=/var/lib/bastion
+# ARG HOME=/var/lib/bastion
 
-ARG USER=bastion
-ARG GROUP=bastion
+# ARG USER=bastion
+# ARG GROUP=bastion
 # ARG UID=4096
 # ARG GID=4096
-ARG UID=0
-ARG GID=0
 
-ENV HOST_KEYS_PATH_PREFIX="/usr"
-ENV HOST_KEYS_PATH="${HOST_KEYS_PATH_PREFIX}/etc/ssh"
+# ENV HOST_KEYS_PATH_PREFIX="/usr"
+# ENV HOST_KEYS_PATH="${HOST_KEYS_PATH_PREFIX}/etc/ssh"
 
-COPY bastion.sh /usr/sbin/bastion.sh
+# COPY bastion.sh /usr/sbin/bastion.sh
 
-RUN addgroup -S -g ${GID} ${GROUP} \
-    && adduser -D -h ${HOME} -s /bin/ash -g "${USER} service" \
-           -u ${UID} -G ${GROUP} ${USER} \
-    && sed -i "s/${USER}:!/${USER}:*/g" /etc/shadow \
-    && set -x \
-    && apk add --no-cache openssh-server && \
-    apk add --no-cache rsync && \
-    echo "Welcome to Bastion!" > /etc/motd \
-    && chmod +x /usr/sbin/bastion.sh \
-    && mkdir -p ${HOST_KEYS_PATH} \
-    && mkdir /etc/ssh/auth_principals \
-    && echo "bastion" > /etc/ssh/auth_principals/bastion
+# RUN addgroup -S -g ${GID} ${GROUP} \
+#     && adduser -D -h ${HOME} -s /bin/ash -g "${USER} service" \
+#            -u ${UID} -G ${GROUP} ${USER} \
+#     && sed -i "s/${USER}:!/${USER}:*/g" /etc/shadow \
+#     && set -x \
+#     && apk add --no-cache openssh-server && \
+#     apk add --no-cache rsync && \
+#     echo "Welcome to Bastion!" > /etc/motd \
+#     && chmod +x /usr/sbin/bastion.sh \
+#     && mkdir -p ${HOST_KEYS_PATH} \
+#     && mkdir /etc/ssh/auth_principals \
+#     && echo "bastion" > /etc/ssh/auth_principals/bastion
+
+RUN apt update && \
+    apt install -y openssh-server rsync && \
+    apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts
 
 EXPOSE 22/tcp
 
-VOLUME ${HOST_KEYS_PATH}
+# VOLUME ${HOST_KEYS_PATH}
 
-ENTRYPOINT ["bastion.sh"]
+ENTRYPOINT ["/usr/sbin/sshd", "-D", "-e"]
