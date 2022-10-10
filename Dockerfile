@@ -6,8 +6,10 @@ ARG HOME=/var/lib/bastion
 
 ARG USER=bastion
 ARG GROUP=bastion
-ARG UID=4096
-ARG GID=4096
+# ARG UID=4096
+# ARG GID=4096
+ARG UID=0
+ARG GID=0
 
 ENV HOST_KEYS_PATH_PREFIX="/usr"
 ENV HOST_KEYS_PATH="${HOST_KEYS_PATH_PREFIX}/etc/ssh"
@@ -25,8 +27,7 @@ RUN addgroup -S -g ${GID} ${GROUP} \
     && chmod +x /usr/sbin/bastion.sh \
     && mkdir -p ${HOST_KEYS_PATH} \
     && mkdir /etc/ssh/auth_principals \
-    && echo "bastion" > /etc/ssh/auth_principals/bastion && \
-    echo "root" > /etc/ssh/auth_principals/root
+    && echo "bastion" > /etc/ssh/auth_principals/bastion
 
 EXPOSE 22/tcp
 
