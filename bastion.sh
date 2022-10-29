@@ -10,18 +10,19 @@ else
     CONFIG_PUBKEY_AUTHENTICATION="-o PubkeyAuthentication=yes"
 fi
 
-if [ -n "$AUTHORIZED_KEYS" ]; then
-    chown 4096:4096 /var/lib/bastion/authorized_keys
-    chmod 600 /var/lib/bastion/authorized_keys
-    CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=$AUTHORIZED_KEYS"
-else
-    CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=authorized_keys"
+if [ -n "$AUTHORIZED_KEYS" ]; then 
+    mkdir -p ~/.ssh
+    cp /mnt/bastion/authorized_keys ~/.ssh/
+    chmod 600 ~/.ssh/authorized_keys
+    # CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=$AUTHORIZED_KEYS"
+# else
+    # CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=authorized_keys"
 fi
 
-if [ -n "$TRUSTED_USER_CA_KEYS" ]; then
-    CONFIG_TRUSTED_USER_CA_KEYS="-o TrustedUserCAKeys=$TRUSTED_USER_CA_KEYS"
-    CONFIG_AUTHORIZED_PRINCIPALS_FILE="-o AuthorizedPrincipalsFile=/etc/ssh/auth_principals/%u"
-fi
+# if [ -n "$TRUSTED_USER_CA_KEYS" ]; then
+#     CONFIG_TRUSTED_USER_CA_KEYS="-o TrustedUserCAKeys=$TRUSTED_USER_CA_KEYS"
+#     CONFIG_AUTHORIZED_PRINCIPALS_FILE="-o AuthorizedPrincipalsFile=/etc/ssh/auth_principals/%u"
+# fi
 
 if [ "$GATEWAY_PORTS" == "true" ]; then
     CONFIG_GATEWAY_PORTS="-o GatewayPorts=yes"
@@ -35,17 +36,6 @@ else
     CONFIG_PERMIT_TUNNEL="-o PermitTunnel=no"
 fi
 
-if [ "$X11_FORWARDING" == "true" ]; then
-    CONFIG_X11_FORWARDING="-o X11Forwarding=yes"
-else
-    CONFIG_X11_FORWARDING="-o X11Forwarding=no"
-fi
-
-if [ "$TCP_FORWARDING" == "false" ]; then
-    CONFIG_TCP_FORWARDING="-o AllowTcpForwarding=no"
-else
-    CONFIG_TCP_FORWARDING="-o AllowTcpForwarding=yes"
-fi
 
 if [ "$AGENT_FORWARDING" == "false" ]; then
     CONFIG_AGENT_FORWARDING="-o AllowAgentForwarding=no"
@@ -77,14 +67,13 @@ fi
     -o "PasswordAuthentication=no" \
     -o "PermitEmptyPasswords=no" \
     -o "PermitRootLogin=yes" \
+    -o "X11Forwarding=yes" \
+    -o "AllowTcpForwarding=yes" \
+    -o "AuthorizedKeysFile=%h/.ssh/authorized_keys" \
     $CONFIG_PUBKEY_AUTHENTICATION \
     $CONFIG_AUTHORIZED_KEYS \
     $CONFIG_GATEWAY_PORTS \
     $CONFIG_PERMIT_TUNNEL \
-    $CONFIG_X11_FORWARDING \
     $CONFIG_AGENT_FORWARDING \
-    $CONFIG_TCP_FORWARDING \
-    $CONFIG_TRUSTED_USER_CA_KEYS \
-    $CONFIG_AUTHORIZED_PRINCIPALS_FILE \
     $CONFIG_LISTEN_ADDRESS \
     $CONFIG_LISTEN_PORT
