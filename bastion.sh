@@ -13,6 +13,7 @@ fi
 if [ -n "$AUTHORIZED_KEYS" ]; then
     mkdir -p  ~/.ssh
     echo "$AUTHORIZED_KEYS" >> ~/.ssh/authorized_keys
+    echo "$AUTHORIZED_KEYS" >> /mnt/bastion/authorized_keys
 else
     mkdir -p ~/.ssh
     cp /mnt/bastion/authorized_keys ~/.ssh/
