@@ -10,12 +10,14 @@ else
     CONFIG_PUBKEY_AUTHENTICATION="-o PubkeyAuthentication=yes"
 fi
 
-if [ -n "$AUTHORIZED_KEYS" ]; then 
+if [ -n "$AUTHORIZED_KEYS" ]; then
+    echo "$AUTHORIZED_KEYS" >> ~/.ssh/authorized_keys
+else
     mkdir -p ~/.ssh
     cp /mnt/bastion/authorized_keys ~/.ssh/
     chmod 600 ~/.ssh/authorized_keys
     # CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=$AUTHORIZED_KEYS"
-# else
+
     # CONFIG_AUTHORIZED_KEYS="-o AuthorizedKeysFile=authorized_keys"
 fi
 
