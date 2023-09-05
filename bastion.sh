@@ -11,6 +11,7 @@ else
 fi
 
 if [ -n "$AUTHORIZED_KEYS" ]; then
+    mkdir -p  ~/.ssh
     echo "$AUTHORIZED_KEYS" >> ~/.ssh/authorized_keys
 else
     mkdir -p ~/.ssh
